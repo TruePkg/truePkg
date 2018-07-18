@@ -1,0 +1,14 @@
+type Customer {
+  _id: ID!
+  name: String!
+  agentid: ID!
+  status: String
+}
+
+extend type Query {
+  getCustomerByName(name: String): Customer
+}
+
+extend type Mutation {
+  createCustomer(name: String!, agentid: ID!, status: String): Customer
+}

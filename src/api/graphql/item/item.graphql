@@ -1,0 +1,11 @@
+type Item {
+  _id: ID!
+  name: String,
+  description: String,
+  price: String,
+  agentid: ID
+}
+
+extend type Query {
+  getItemByName(name: String!): Item
+}

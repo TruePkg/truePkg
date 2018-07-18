@@ -1,0 +1,16 @@
+type User {
+  _id: ID!
+  name: String!
+  gender: String
+  managerid: [String]
+  customerids: [String]
+}
+
+type Query {
+  getUser(name: String, gender: String): User
+  users: [User]
+}
+
+type Mutation {
+  createUser(name: String, gender: String): User
+}

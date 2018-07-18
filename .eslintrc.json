@@ -1,0 +1,36 @@
+{
+    "extends": ["walmart/configurations/es6-node", "plugin:import/errors"],
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "sourceType": "module",
+      "allowImportExportEverywhere": false,
+      "codeFrame": false
+    },
+    "rules": {
+      "curly": ["error", "multi-line"],
+      "import/default": "off",
+      "import/newline-after-import": "error",
+      "import/no-duplicates": "error",
+      "import/no-unassigned-import": "error",
+      "import/resolver": {
+        "node": {
+          "paths": ["src"]
+        }
+      },
+      "import/core-modules": ["bluebird", "confidence", "debug", "hoek", "lodash", "qs", "stack-trace"],
+      "import/order": ["error", { "newlines-between": "always" }],
+      "indent": ["error", 2, { "SwitchCase": 1 }],
+      "new-cap": 0,
+      "no-console": "error",
+    //   "no-param-reassign": ["error", { "props": false }],
+      "object-curly-spacing": ["error", "always"],
+      "quotes": ["error", "single"],
+      "semi": ["error", "never"],
+      "valid-jsdoc": ["error"],
+      "no-param-reassign": [0, { "props": false }],
+      "no-shadow": "off",
+      "max-len": ["error", { "code": 150, "ignoreStrings": true, "ignoreUrls": true }],
+      "consistent-return": "off",
+      "max-statements": ["error", 30]
+    }
+  }
