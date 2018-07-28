@@ -67,8 +67,15 @@ options.socketOptions.socketTimeoutMS = 120000
  *
  **/
 
-exports.register = (server, options, next) => {
-  defaults = Hoek.applyToDefaults(defaults, options)
+exports.plugin = {
+  name: 'mongo'
+}
+
+exports.plugin.register = async (server, options, next) => {
+  // defaults = Hoek.applyToDefaults(defaults, options)
+  defaults = {
+    uri: 'mongodb+srv://devadmin:huzzah@cluster0-g1jmo.mongodb.net/test?retryWrites=true'
+  }
 
   const isNotProduction = !_.includes(['production'], process.env.NODE_ENV)
   const isNotTesting = !_.includes(['test'], process.env.NODE_ENV)
@@ -76,9 +83,9 @@ exports.register = (server, options, next) => {
 
   if (Mongoose.connection.readyState) {
     log('Mongo: next, readyState') // eslint-disable-line
-    return next()
+    await Promise.resolve()
   }
-
+  console.log('asdfsafsfd')
   // setup our connection
   log(['server', 'database', 'connection'], `${process.env.NODE_ENV} server CONNECTING to ${defaults.uri}`)
 
@@ -94,10 +101,11 @@ exports.register = (server, options, next) => {
   */
   options.config = { autoIndex: isNotProduction }
 
-  Mongoose.connect(defaults.uri, options).then(() => {
+  Mongoose.connect(defaults.uri, options).then(async () => {
     log(['server', 'database', 'connection'], `${process.env.NODE_ENV} server CONNECTED to ${defaults.uri}`)
     log('Mongo: next, connect') // eslint-disable-line
-    return next() // call the next item in hapi bootstrap
+    // return next() // call the next item in hapi bootstrap
+    await Promise.resolve()
   })
 
   /* istanbul ignore next */
@@ -134,6 +142,3 @@ exports.register = (server, options, next) => {
   })
 }
 
-exports.register.attributes = {
-  name: 'mongo'
-}

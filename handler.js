@@ -1,10 +1,11 @@
 import hapi from 'hapi'
 import mongoose from 'mongoose'
+import lambdaPlayground from 'graphql-playground-middleware-lambda'
 
 import Manifest from './src/api/manifest'
 
 let server = null
-const MongoDBUrl = 'mongodb://localhost:27017/test'
+const MongoDBUrl = process.env.MONGODB_URI
 
 exports.handler = async (event, context) => { //eslint-disable-line
   try {
@@ -42,3 +43,7 @@ exports.handler = async (event, context) => { //eslint-disable-line
   delete headers['transfer-encoding']
   return { statusCode, headers, body }
 }
+
+exports.playground = lambdaPlayground({
+  endpoint: `/graphql`
+})

@@ -3,6 +3,7 @@
 import playground from './playground'
 import Config from './config'
 import graphql from './graphql'
+// const mongo = require('./mongo')
 
 // const criteria = { env: process.env.NODE_ENV }
 
@@ -14,6 +15,9 @@ const manifest = {
       {
         plugin: require('./hello')
       },
+      // {
+      //   plugin: mongo
+      // },
       graphql,
       playground
     ]

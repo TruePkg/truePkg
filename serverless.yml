@@ -20,7 +20,13 @@ functions:
           request:
             template:
               application/json: '{ "httpMethod" : "$context.httpMethod" }'
-
+  playground:
+    handler: handler.playground
+    events: 
+      - http:
+          path: "/playground"
+          method: "get"
+          cors: true  
 package:
   individually: true
 

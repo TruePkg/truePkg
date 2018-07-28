@@ -1,8 +1,8 @@
 {
   "service": {
-    "service": "Wonda",
+    "service": "TruePackage",
     "serviceObject": {
-      "name": "Wonda"
+      "name": "TruePackage"
     },
     "provider": {
       "stage": "dev",
@@ -22,7 +22,13 @@
           "ApiLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/Wonda-production-api"
+              "LogGroupName": "/aws/lambda/TruePackage-production-api"
+            }
+          },
+          "PlaygroundLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/TruePackage-production-playground"
             }
           },
           "IamRoleLambdaExecution": {
@@ -51,7 +57,7 @@
                       "-",
                       [
                         "production",
-                        "Wonda",
+                        "TruePackage",
                         "lambda"
                       ]
                     ]
@@ -66,7 +72,10 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/Wonda-production-api:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/TruePackage-production-api:*"
+                          },
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/TruePackage-production-playground:*"
                           }
                         ]
                       },
@@ -77,7 +86,10 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/Wonda-production-api:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/TruePackage-production-api:*:*"
+                          },
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/TruePackage-production-playground:*:*"
                           }
                         ]
                       }
@@ -90,7 +102,7 @@
                 "Fn::Join": [
                   "-",
                   [
-                    "Wonda",
+                    "TruePackage",
                     "production",
                     "us-east-1",
                     "lambdaRole"
@@ -106,9 +118,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/Wonda/production/1531258135595-2018-07-10T21:28:55.595Z/api.zip"
+                "S3Key": "serverless/TruePackage/production/1532759682862-2018-07-28T06:34:42.862Z/api.zip"
               },
-              "FunctionName": "Wonda-production-api",
+              "FunctionName": "TruePackage-production-api",
               "Handler": "handler.handler",
               "MemorySize": 1024,
               "Role": {
@@ -125,20 +137,56 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "ApiLambdaVersionCkslyGwdCk9t9kxL0nQcS09JzgoGtQcEJJGtwytALg": {
+          "ApiLambdaVersion1MynAKsxbS5s9rhJhrGS9EzeBikMvNq5f6mbeneM": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "XTOpFiEoRnsw99AV9AdRbjevQsm30FOGL+m3HCGD8s4="
+              "CodeSha256": "4BpkMmvhU/6+A/E+YbYzTUNfHuBEv2p2A6Taf3gyb94="
+            }
+          },
+          "PlaygroundLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/TruePackage/production/1532759682862-2018-07-28T06:34:42.862Z/playground.zip"
+              },
+              "FunctionName": "TruePackage-production-playground",
+              "Handler": "handler.playground",
+              "MemorySize": 1024,
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              },
+              "Runtime": "nodejs8.10",
+              "Timeout": 6
+            },
+            "DependsOn": [
+              "PlaygroundLogGroup",
+              "IamRoleLambdaExecution"
+            ]
+          },
+          "PlaygroundLambdaVersionBubjwxVTUPQF3Som9niUxe8zThMfXHyAoaPwmaJnHZs": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "PlaygroundLambdaFunction"
+              },
+              "CodeSha256": "4BpkMmvhU/6+A/E+YbYzTUNfHuBEv2p2A6Taf3gyb94="
             }
           },
           "ApiGatewayRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
-              "Name": "production-Wonda",
+              "Name": "production-TruePackage",
               "EndpointConfiguration": {
                 "Types": [
                   "EDGE"
@@ -156,6 +204,21 @@
                 ]
               },
               "PathPart": "{proxy+}",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourcePlayground": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "playground",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
@@ -208,6 +271,53 @@
               }
             }
           },
+          "ApiGatewayMethodPlaygroundOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true,
+                    "method.response.header.Access-Control-Allow-Credentials": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'",
+                      "method.response.header.Access-Control-Allow-Credentials": "'false'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourcePlayground"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
           "ApiGatewayMethodProxyVarAny": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
@@ -251,7 +361,50 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1531258135650": {
+          "ApiGatewayMethodPlaygroundGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourcePlayground"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "PlaygroundLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayDeployment1532759683105": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -260,7 +413,8 @@
               "StageName": "production"
             },
             "DependsOn": [
-              "ApiGatewayMethodProxyVarAny"
+              "ApiGatewayMethodProxyVarAny",
+              "ApiGatewayMethodPlaygroundGet"
             ]
           },
           "ApiLambdaPermissionApiGateway": {
@@ -269,6 +423,53 @@
               "FunctionName": {
                 "Fn::GetAtt": [
                   "ApiLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "apigateway.",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    }
+                  ]
+                ]
+              },
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "PlaygroundLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "PlaygroundLambdaFunction",
                   "Arn"
                 ]
               },
@@ -320,7 +521,13 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersionCkslyGwdCk9t9kxL0nQcS09JzgoGtQcEJJGtwytALg"
+              "Ref": "ApiLambdaVersion1MynAKsxbS5s9rhJhrGS9EzeBikMvNq5f6mbeneM"
+            }
+          },
+          "PlaygroundLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "PlaygroundLambdaVersionBubjwxVTUPQF3Som9niUxe8zThMfXHyAoaPwmaJnHZs"
             }
           },
           "ServiceEndpoint": {
@@ -416,9 +623,48 @@
             }
           }
         ],
-        "name": "Wonda-production-api",
+        "name": "TruePackage-production-api",
         "package": {
           "artifact": ".serverless/api.zip"
+        },
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs8.10",
+        "vpc": {}
+      },
+      "playground": {
+        "handler": "handler.playground",
+        "events": [
+          {
+            "http": {
+              "path": "playground",
+              "method": "get",
+              "cors": {
+                "origins": [
+                  "*"
+                ],
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "GET"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent"
+                ],
+                "allowCredentials": false
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "TruePackage-production-playground",
+        "package": {
+          "artifact": ".serverless/playground.zip"
         },
         "memory": 1024,
         "timeout": 6,
@@ -429,7 +675,7 @@
   },
   "package": {
     "individually": true,
-    "artifactDirectoryName": "serverless/Wonda/production/1531258135595-2018-07-10T21:28:55.595Z",
+    "artifactDirectoryName": "serverless/TruePackage/production/1532759682862-2018-07-28T06:34:42.862Z",
     "artifact": ""
   }
 }
