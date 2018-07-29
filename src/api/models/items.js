@@ -3,10 +3,10 @@ import Mongoose from 'mongoose'
 const Schema = Mongoose.Schema
 
 const itemSchema = new Schema({
-  description: { type: String },
-  name: { type: String },
-  sku: { type: String },
-  price: { type: Number },
+  description: { type: String, default: '' },
+  name: { type: String, default: '' },
+  sku: { type: String, default: '' },
+  price: { type: Number, default: 0 },
   agentid: { type: Schema.ObjectId, ref: 'Users' }
 })
 
