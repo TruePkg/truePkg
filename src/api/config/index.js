@@ -17,11 +17,13 @@ const criteria = {
 }
 
 import server from './server'
+import auth from './auth'
 
 const config = {
   $meta: 'main server config',
   pkg,
-  server
+  server,
+  auth
 }
 
 const store = new Confidence.Store(config)

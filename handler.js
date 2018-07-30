@@ -20,7 +20,6 @@ exports.handler = async (event, context) => { //eslint-disable-line
     await server.start()
     mongoose.connect(MongoDBUrl, {}).then(() => {console.log('connected to mongo db')}).catch(error => {console.log(error, 'asfsafsaf')})
   } catch (error) {
-    console.log('asdfsadf', error)
     return error
   }
 

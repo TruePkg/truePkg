@@ -3,7 +3,7 @@ import Mongoose from 'mongoose'
 const Schema = Mongoose.Schema
 
 const userSchema = new Schema({
-  name: { type: String, default: '' },
+  email: { type: String, default: '' },
   organization: {
     name: { type: String, default: '' },
     office: { type: String, default: '' },
@@ -23,7 +23,8 @@ const userSchema = new Schema({
   updatedAt: { type: Date, default: Date.now },
   dialogflow: {
     userStorage: { type: Object, default: {} }
-  }
+  },
+  role: { type: String, default: '' }
 })
 
 let Users

@@ -20,7 +20,7 @@ import Logger from '../helpers/logger'
 const log = Logger('hello').log
 
 exports.plugin = {
-  name: 'smd',
+  name: 'hello',
   register: async (server, options) => {
     server.route({
       method: 'GET',
