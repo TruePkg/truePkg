@@ -17,8 +17,8 @@ exports.handler = async (event, context) => { //eslint-disable-line
       })
       await server.register(Manifest.register.plugins)
     }
+    mongoose.connect('mongodb+srv://devadmin:huzzah@cluster0-g1jmo.mongodb.net/test?retryWrites=true', { useNewUrlParser: true }).then(() => {console.log('connected to mongo db')}).catch(error => {console.log(error, 'asfsafsaf')})
     await server.start()
-    mongoose.connect(MongoDBUrl, {}).then(() => {console.log('connected to mongo db')}).catch(error => {console.log(error, 'asfsafsaf')})
   } catch (error) {
     return error
   }

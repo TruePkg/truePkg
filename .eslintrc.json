@@ -22,7 +22,7 @@
       "indent": ["error", 2, { "SwitchCase": 1 }],
       "new-cap": 0,
       "no-console": "error",
-    //   "no-param-reassign": ["error", { "props": false }],
+      "no-param-reassign": ["error", { "props": false }],
       "object-curly-spacing": ["error", "always"],
       "quotes": ["error", "single"],
       "semi": ["error", "never"],

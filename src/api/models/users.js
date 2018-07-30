@@ -7,7 +7,7 @@ const userSchema = new Schema({
   organization: {
     name: { type: String, default: '' },
     office: { type: String, default: '' },
-    offcies: { type: Array, default: [] }
+    offices: { type: Array, default: [] }
   },
   profile: {
     name: { type: String, default: '' },
