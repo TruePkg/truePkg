@@ -5,11 +5,12 @@
       "name": "TruePackage"
     },
     "provider": {
-      "stage": "dev",
+      "stage": "production",
       "region": "us-east-1",
       "variableSyntax": "\\${([ ~:a-zA-Z0-9._'\",\\-\\/\\(\\)]+?)}",
       "name": "aws",
       "runtime": "nodejs8.10",
+      "envionment": "production",
       "versionFunctions": true,
       "remoteFunctionData": null,
       "compiledCloudFormationTemplate": {
@@ -118,7 +119,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/TruePackage/production/1532759682862-2018-07-28T06:34:42.862Z/api.zip"
+                "S3Key": "serverless/TruePackage/production/1533003403386-2018-07-31T02:16:43.386Z/api.zip"
               },
               "FunctionName": "TruePackage-production-api",
               "Handler": "handler.handler",
@@ -137,14 +138,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "ApiLambdaVersion1MynAKsxbS5s9rhJhrGS9EzeBikMvNq5f6mbeneM": {
+          "ApiLambdaVersionyy2cEtbGEy3mJJleaRmrxvp8fchmcujV7xxyp2gvwTk": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "4BpkMmvhU/6+A/E+YbYzTUNfHuBEv2p2A6Taf3gyb94="
+              "CodeSha256": "nx5mxiwx2OvBJjzTLsQJ2oPsIhxxnv4rg3GgGnNkCh8="
             }
           },
           "PlaygroundLambdaFunction": {
@@ -154,7 +155,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/TruePackage/production/1532759682862-2018-07-28T06:34:42.862Z/playground.zip"
+                "S3Key": "serverless/TruePackage/production/1533003403386-2018-07-31T02:16:43.386Z/playground.zip"
               },
               "FunctionName": "TruePackage-production-playground",
               "Handler": "handler.playground",
@@ -173,14 +174,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "PlaygroundLambdaVersionBubjwxVTUPQF3Som9niUxe8zThMfXHyAoaPwmaJnHZs": {
+          "PlaygroundLambdaVersionrxrtlsRS1f9Ms3LigwnRE9LY6pNHBnPDkmkAlcpg": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "PlaygroundLambdaFunction"
               },
-              "CodeSha256": "4BpkMmvhU/6+A/E+YbYzTUNfHuBEv2p2A6Taf3gyb94="
+              "CodeSha256": "nx5mxiwx2OvBJjzTLsQJ2oPsIhxxnv4rg3GgGnNkCh8="
             }
           },
           "ApiGatewayRestApi": {
@@ -404,7 +405,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1532759683105": {
+          "ApiGatewayDeployment1533003403843": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -521,13 +522,13 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersion1MynAKsxbS5s9rhJhrGS9EzeBikMvNq5f6mbeneM"
+              "Ref": "ApiLambdaVersionyy2cEtbGEy3mJJleaRmrxvp8fchmcujV7xxyp2gvwTk"
             }
           },
           "PlaygroundLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "PlaygroundLambdaVersionBubjwxVTUPQF3Som9niUxe8zThMfXHyAoaPwmaJnHZs"
+              "Ref": "PlaygroundLambdaVersionrxrtlsRS1f9Ms3LigwnRE9LY6pNHBnPDkmkAlcpg"
             }
           },
           "ServiceEndpoint": {
@@ -570,7 +571,7 @@
       "vpc": {}
     },
     "custom": {
-      "serverless-0ffline": {
+      "serverless-offline": {
         "babelOptions": {
           "presets": [
             "es2015",
@@ -578,6 +579,7 @@
           ]
         }
       },
+      "stage": "production",
       "webpack": "./webpack.config.js",
       "webpackIncludeModules": {
         "packagePath": "./package.json"
@@ -675,7 +677,7 @@
   },
   "package": {
     "individually": true,
-    "artifactDirectoryName": "serverless/TruePackage/production/1532759682862-2018-07-28T06:34:42.862Z",
+    "artifactDirectoryName": "serverless/TruePackage/production/1533003403386-2018-07-31T02:16:43.386Z",
     "artifact": ""
   }
 }

@@ -25,17 +25,17 @@ const log = Logger('mongo').log
  * Setup
  *
  **/
-Bluebird.config({
-  // http://bluebirdjs.com/docs/api/promise.config.html
-  // Enable cancellation
-  cancellation: false,
-  // Enable long stack traces
-  longStackTraces: true,
-  // Enable monitoring
-  monitoring: true,
-  // Enable warnings
-  warnings: true
-})
+// Bluebird.config({
+//   // http://bluebirdjs.com/docs/api/promise.config.html
+//   // Enable cancellation
+//   cancellation: false,
+//   // Enable long stack traces
+//   longStackTraces: true,
+//   // Enable monitoring
+//   monitoring: true,
+//   // Enable warnings
+//   warnings: true
+// })
 
 global.Promise = Bluebird
 // @TODO Use native promises
@@ -71,23 +71,23 @@ exports.plugin = {
   name: 'mongo'
 }
 
-exports.plugin.register = async (server, options, next) => {
+exports.plugin.register = async (server, options) => {
   // defaults = Hoek.applyToDefaults(defaults, options)
   defaults = {
     uri: 'mongodb+srv://devadmin:huzzah@cluster0-g1jmo.mongodb.net/test?retryWrites=true'
   }
 
-  const isNotProduction = !_.includes(['production'], process.env.NODE_ENV)
-  const isNotTesting = !_.includes(['test'], process.env.NODE_ENV)
-  Mongoose.set('debug', isNotTesting)
+  // const isNotProduction = !_.includes(['production'], process.env.NODE_ENV)
+  // const isNotTesting = !_.includes(['test'], process.env.NODE_ENV)
+  // Mongoose.set('debug', isNotTesting)
 
-  if (Mongoose.connection.readyState) {
-    log('Mongo: next, readyState') // eslint-disable-line
-    await Promise.resolve()
-  }
-  console.log('asdfsafsfd')
-  // setup our connection
-  log(['server', 'database', 'connection'], `${process.env.NODE_ENV} server CONNECTING to ${defaults.uri}`)
+  // if (Mongoose.connection.readyState) {
+  //   log('Mongo: next, readyState') // eslint-disable-line
+  //   await Promise.resolve()
+  // }
+  // console.log('asdfsafsfd')
+  // // setup our connection
+  // log(['server', 'database', 'connection'], `${process.env.NODE_ENV} server CONNECTING to ${defaults.uri}`)
 
   /*
   NOTE: When your application starts up, Mongoose automatically calls createIndex for each defined
@@ -99,46 +99,32 @@ exports.plugin.register = async (server, options, next) => {
   Online Reference
     http://mongoosejs.com/docs/guide.html
   */
-  options.config = { autoIndex: isNotProduction }
+  // options.config = { autoIndex: isNotProduction }
+  options.config = { autoIndex: 'true' }
 
   Mongoose.connect(defaults.uri, options).then(async () => {
     log(['server', 'database', 'connection'], `${process.env.NODE_ENV} server CONNECTED to ${defaults.uri}`)
     log('Mongo: next, connect') // eslint-disable-line
     // return next() // call the next item in hapi bootstrap
-    await Promise.resolve()
+    return await Promise.resolve()
   })
 
   /* istanbul ignore next */
   server.ext({
     type: 'onPostStop',
-    method: (request, done) => {
+    method: async (request, h) => {
       const startDisconnect = `${process.env.NODE_ENV} server DISCONNECTING from ${defaults.uri} due to server shutdown`
-      const endDisconnect = `${process.env.NODE_ENV} server DISCONNECTED from ${defaults.uri} due to server shutdown`
+      // const endDisconnect = `${process.env.NODE_ENV} server DISCONNECTED from ${defaults.uri} due to server shutdown`
       log(['server', 'database', 'connection'], startDisconnect)
       log(startDisconnect) // eslint-disable-line no-console
 
-      const disconnectDB = () => {
-        Mongoose.disconnect(() => {
-          log(['server', 'database', 'connection'], endDisconnect)
-          log(endDisconnect) // eslint-disable-line no-console
-          return done()
-        })
+      const disconnectDB = async () => {
+        await Mongoose.disconnect()
       }
-
-    //   if (process.env.NODE_ENV === 'feature' && process.env.JOBS !== 'true') {
-    //     log('We are on a feature branch, so drop database on server stop') // eslint-disable-line no-console
-    //     Mongoose.connection.dropDatabase(err => {
-    //       if (err) {
-    //         log('There was an error dropping DB', err) // eslint-disable-line no-console
-    //       } else {
-    //         log('Database dropped') // eslint-disable-line no-console
-    //       }
-    //       disconnectDB()
-    //     })
-    //   } else {
-    //     disconnectDB()
-    //   }
+      await disconnectDB
+      return h.continue()
     }
   })
+  return Promise.resolve()
 }
 
