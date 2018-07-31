@@ -24,13 +24,6 @@ const handler = async (request, h) => {
     if (!user) {
       return Boom.unauthorized()
     }
-    // const saltRounds = 10
-    // Bcrypt.genSalt(saltRounds, function(err, salt) {
-    //     Bcrypt.hash(payload.password, salt, function(err, hash) {
-    //         // Store hash in your password DB.
-    //         console.log(hash, 'sadfsadf')
-    //     })
-    // })
     const success = await Bcrypt.compare(password, user.password)
     if (success) {
       const token = createJwt(user)

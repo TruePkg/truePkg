@@ -8,9 +8,7 @@ import { createJwt } from '../helpers'
  * Plugin
  *
  **/
-// import Logger from '../helpers/logger'
 
-// const log = Logger('login').log
 
 const handler = async (request, h) => {
   const payload = request.payload
@@ -19,7 +17,6 @@ const handler = async (request, h) => {
     // log(payload, 'payload')
     const userCheck = await Users.findOne({ email: payload.email, organization: payload.organization }).exec()
     if (userCheck) {
-      // console.log(userCheck, 'aaaaaaaaaaaaaaaa')
       return Boom.unauthorized()
     }
     const update = {
@@ -39,7 +36,6 @@ const handler = async (request, h) => {
         roles: payload.role
       }
     }
-    // console.log(update, 'updateeeee')
     const saltRounds = 10
     const salt = await Bcrypt.genSalt(saltRounds)
     const hash = await Bcrypt.hash(payload.password, salt)
