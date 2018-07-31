@@ -27,7 +27,12 @@ exports.plugin = {
       path: '/hello',
       handler: async (request, h) => {
         log('hi')
-        return 'it works'
+        const obj = {
+          value: 'it works'
+        }
+        const response = h.response(obj)
+        response.type('application/json')
+        return response
       }
     })
     return Promise.resolve()

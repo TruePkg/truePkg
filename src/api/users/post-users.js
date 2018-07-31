@@ -15,13 +15,11 @@ import { createJwt } from '../helpers'
 const handler = async (request, h) => {
   const payload = request.payload
   try {
-    // console.log(payload, 'asdfsafdsdaf')
-    // return 'wtf bitch'
     console.log(payload, ' this is the payload, hello testing a log in here')
     // log(payload, 'payload')
-    const userCheck = await Users.findOne({ email: payload.email }).exec()
+    const userCheck = await Users.findOne({ email: payload.email, organization: payload.organization }).exec()
     if (userCheck) {
-      console.log(userCheck, 'aaaaaaaaaaaaaaaa')
+      // console.log(userCheck, 'aaaaaaaaaaaaaaaa')
       return Boom.unauthorized()
     }
     const update = {
@@ -41,28 +39,16 @@ const handler = async (request, h) => {
         roles: payload.role
       }
     }
-    console.log(update, 'updateeeee')
+    // console.log(update, 'updateeeee')
     const saltRounds = 10
     const salt = await Bcrypt.genSalt(saltRounds)
     const hash = await Bcrypt.hash(payload.password, salt)
-    console.log(salt, hash, 'fuck me in the asss')
     update.$set.password = hash
-    // Bcrypt.genSalt(saltRounds, (err, salt) => {
-    //   console.log(err, 'bcrypt serror')
-    //   Bcrypt.hash(payload.password, salt, (err, hash) => {
-    //     // Store hash in your password DB.
-    //     console.log(err, 'bycrpt hash error fmasss')
-    //     update.$set.password = hash
-    //     console.log(hash, 'this is the hash?')
-    //   })
-    // })
+
     const user = await Users.findOneAndUpdate({ email: payload.email }, update, { upsert: true, new: true }).exec()
-    console.log(user, 'why the FUCK is this user not owrking')
     const token = createJwt(user)
-    console.log(token, 'how the FUCK does bitcooin work')
-    return h.response(token)
+    return h.response({ token, user })
   } catch (error) {
-    console.log(error, 'what the actual FUCK')
     return error
   }
 }

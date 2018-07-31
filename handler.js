@@ -57,10 +57,10 @@ exports.handler = async (event, context) => { //eslint-disable-line
     headers: reqHeaders,
     validate: false
   })
-
+  
   delete headers['content-encoding']
   delete headers['transfer-encoding']
-  return { statusCode, headers, body }
+  return { statusCode, headers, body: JSON.stringify(body) }
 }
 
 exports.playground = lambdaPlayground({
