@@ -34,7 +34,7 @@ const handler = async (request, h) => {
     const success = await Bcrypt.compare(password, user.password)
     if (success) {
       const token = createJwt(user)
-      return token
+      return h.response(token)
     } else {
       return Boom.notFound('Sorry, that password or email is not recognized.')
     }

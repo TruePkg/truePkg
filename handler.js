@@ -1,11 +1,31 @@
 import hapi from 'hapi'
 import mongoose from 'mongoose'
 import lambdaPlayground from 'graphql-playground-middleware-lambda'
+import Bluebird from 'bluebird'
 
 import Manifest from './src/api/manifest'
 
 let server = null
 const MongoDBUrl = process.env.MONGODB_URI
+
+const options = {
+  // useMongoClient: true,
+  autoIndex: false, // Don't build indexes
+  reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
+  reconnectInterval: 500, // Reconnect every 500ms
+  poolSize: 10, // Maintain up to 10 socket connections
+  // If not connected, return errors immediately rather than waiting for reconnect
+  bufferMaxEntries: 0
+}
+
+options.db = { native_parser: true } // eslint-disable-line camelcase
+options.autoReconnect = true
+options.promiseLibrary = Bluebird
+// options.socketOptions = {}
+// options.socketOptions.keepAlive = 30000
+// options.socketOptions.connectTimeoutMS = 300000
+// options.socketOptions.socketTimeoutMS = 120000
+options.useNewUrlParser = true
 
 exports.handler = async (event, context) => { //eslint-disable-line
   try {
@@ -17,7 +37,7 @@ exports.handler = async (event, context) => { //eslint-disable-line
       })
       await server.register(Manifest.register.plugins)
     }
-    mongoose.connect('mongodb+srv://devadmin:huzzah@cluster0-g1jmo.mongodb.net/test?retryWrites=true', { useNewUrlParser: true }).then(() => {console.log('connected to mongo db')}).catch(error => {console.log(error, 'asfsafsaf')})
+    await mongoose.connect('mongodb+srv://devadmin:huzzah@cluster0-g1jmo.mongodb.net/test?retryWrites=true', options)
     await server.start()
   } catch (error) {
     return error
