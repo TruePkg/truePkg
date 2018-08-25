@@ -8,7 +8,6 @@ import { userPlugins } from './users'
 // const mongo = require('./mongo')
 
 // const criteria = { env: process.env.NODE_ENV }
-
 const manifest = {
   $meta: 'main server manifest',
   server: Config.get('/server'),

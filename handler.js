@@ -32,7 +32,7 @@ exports.handler = async (event, context) => { //eslint-disable-line
     if (server === null) {
       server = new hapi.Server({
         host: 'localhost',
-        port: 3001,
+        port: 3002,
         routes: { cors: true }
       })
       await server.register(Manifest.register.plugins)

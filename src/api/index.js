@@ -4,7 +4,8 @@ import mongoose from 'mongoose'
 import Manifest from './manifest'
 
 let server = null
-const MongoDBUrl = 'mongodb://localhost:27017/test'
+// const MongoDBUrl = 'mongodb://localhost:27017/test'
+const MongoDBUrl = 'mongodb+srv://devadmin:huzzah@cluster0-g1jmo.mongodb.net/test?retryWrites=true'
 
 exports.handler = async (event, context) => { //eslint-disable-line
   try {

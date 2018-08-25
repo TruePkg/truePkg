@@ -17,7 +17,7 @@ const handler = async (request, h) => {
     // log(payload, 'payload')
     const userCheck = await Users.findOne({ email: payload.email, organization: payload.organization }).exec()
     if (userCheck) {
-      return Boom.unauthorized()
+      throw Boom.unauthorized()
     }
     const update = {
       $set: {
@@ -45,7 +45,7 @@ const handler = async (request, h) => {
     const token = createJwt(user)
     return h.response({ token, user })
   } catch (error) {
-    return error
+    throw Boom(error)
   }
 }
 

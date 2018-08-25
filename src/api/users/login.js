@@ -15,12 +15,13 @@ const log = Logger('login').log
 const handler = async (request, h) => {
   try {
     const payload = request.payload
+    console.log(payload, 'safdsafdsafsafsafd')
     log(payload, 'payload')
     const organization = payload.organization
     const email = payload.email
     const password = payload.password
     const role = payload.role
-    const user = await Users.findOne({ email, role, organization }).exec()
+    const user = await Users.findOne({ email, role, 'organization.name': organization }).exec()
     if (!user) {
       return Boom.unauthorized()
     }

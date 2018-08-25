@@ -23,7 +23,7 @@ exports.plugin = {
   name: 'hello',
   register: async (server, options) => {
     server.route({
-      method: 'GET',
+      method: 'POST',
       path: '/hello',
       handler: async (request, h) => {
         log('hi')
@@ -31,7 +31,8 @@ exports.plugin = {
           value: 'it works'
         }
         const response = h.response(obj)
-        response.type('application/json')
+        // response.type('application/json')
+        console.log(request.payload, 'safdsafsfsf')
         return response
       }
     })
