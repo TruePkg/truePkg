@@ -1,6 +1,8 @@
 import csv from 'csvtojson'
 import Request from 'request-promise'
 
+import Inventory from '../models/inventory'
+
 // const Json2csvParser = require('json2csv').Parser
 
 // const fields = ['name', 'description', 'sku', 'price']
@@ -41,11 +43,14 @@ const handler = async (request, h) => {
       const stream = await Request(options)
       return csv()
         .fromString(stream)
-        .then(obj => {
-          console.log(csv, 'csv object ')
-          return h.response(obj)
+        .then(async obj => {
+          console.log(obj, 'csv object ')
+          const inventory = new Inventory()
+          inventory.items = obj
+          await inventory.save()
+          return h.response(inventory.items)
         })
-        .catch(err => {console.log(error, 'why')})
+        .catch(err => {console.log(err, 'why')})
     } catch (error) {
       throw error
       console.log(error, 'whyyyyy')
