@@ -9,8 +9,8 @@ import Logger from '../helpers/logger'
 
 export default class Aws {
   constructor() {
-    this.accessKeyId = 'AKIAJAHXEKMU2BP5M57Q'
-    this.secretAccessKey = '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'
+    this.accessKeyId = process.env.AWS_ACCESS_KEY_ID
+    this.secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY
   }
 
   async getSignedUrl(name, type) {
