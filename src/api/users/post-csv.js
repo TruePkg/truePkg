@@ -1,5 +1,6 @@
 import csv from 'csvtojson'
 import Request from 'request-promise'
+import jwt from 'jsonwebtoken'
 
 import Inventory from '../models/inventory'
 
@@ -32,7 +33,12 @@ import Inventory from '../models/inventory'
 
 const handler = async (request, h) => {
   const payload = request.payload
+  console.log(payload, 'payload')
   try {
+    const decoded = await jwt.decode(payload.token)
+    const orgName = decoded.organization.name
+    const id = decoded.id
+    console.log(decoded, 'safdsafd')
     const options = {
       method: 'GET',
       uri: payload.csvUrl,
@@ -45,9 +51,23 @@ const handler = async (request, h) => {
         .fromString(stream)
         .then(async obj => {
           console.log(obj, 'csv object ')
-          const inventory = new Inventory()
-          inventory.items = obj
-          await inventory.save()
+          const inventory = await Inventory.findOneAndUpdate(
+            {
+              organization: orgName
+            },
+            {
+              $set: {
+                items: obj
+              }
+            },
+            {
+              new: true,
+              upsert: true
+            }
+          ).exec()
+          // const inventory = new Inventory()
+          // inventory.items = obj
+          // await inventory.save()
           return h.response(inventory.items)
         })
         .catch(err => {console.log(err, 'why')})

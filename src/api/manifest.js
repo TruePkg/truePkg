@@ -21,7 +21,7 @@ const manifest = {
       // },
       // {
       //   plugin: mongo
-    // },
+      // },
       graphql,
       playground
     ]
