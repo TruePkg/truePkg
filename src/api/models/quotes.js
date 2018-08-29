@@ -6,7 +6,8 @@ const quoteSchema = new Schema({
   agentid: { type: Schema.ObjectId, ref: 'Quotes' },
   customerid: { type: Schema.ObjectId, ref: 'Customers' },
   lead: { type: Schema.ObjectId, ref: 'Leads' },
-  details: { type: Object, default: {} }
+  quotes: { type: Array, default: [] },
+  status: { type: String, default: 'draft' }
 })
 
 let Quotes

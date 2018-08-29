@@ -4,33 +4,6 @@ import jwt from 'jsonwebtoken'
 
 import Inventory from '../models/inventory'
 
-// const Json2csvParser = require('json2csv').Parser
-
-// const fields = ['name', 'description', 'sku', 'price']
-
-// const opts = { fields }
-
-// const fakeData = [
-//   {
-//     name: 'box',
-//     description: 'a box',
-//     sku: 247,
-//     price: 1
-//   },
-//   {
-//     name: 'cat',
-//     description: 'a cat',
-//     sku: 247,
-//     price: 1
-//   },
-//   {
-//     name: 'lid',
-//     description: 'a lid',
-//     sku: 247,
-//     price: 1
-//   }
-// ]
-
 const handler = async (request, h) => {
   const payload = request.payload
   console.log(payload, 'payload')

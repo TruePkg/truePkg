@@ -4,6 +4,8 @@ import postUsers from './post-users'
 import postCsv from './post-csv'
 import postSignature from './post-signature'
 import getInventory from './get-inventory'
+import getQuotes from './get-quotes'
+import postQuote from './post-quote'
 
 export const userPlugins = [
   login,
@@ -11,5 +13,7 @@ export const userPlugins = [
   postUsers,
   postCsv,
   postSignature,
-  getInventory
+  getInventory,
+  getQuotes,
+  postQuote
 ]
